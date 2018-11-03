@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .success
+        {
+            background-image: url("images/li_ok.gif");
+            background-color:#E6FEE4;
+            border-color:#01BE00;
+            background-repeat: no-repeat;
+            background-position: left 2px;
+            padding:0 18px;
+        }
+        .danger
+        {
+            background-image: url("images/li_err.gif");
+            background-color:#FFF2E5;
+            border-color:#FF3300;
+            background-repeat: no-repeat;
+            background-position: left 2px;
+            padding:0 18px;
+        }
+        .nav
+        {
+            width: 650px;
+            margin: 50px auto;
+        }
+        .nav1
+        {
+            border: 1px solid #666666;
+            border-radius: 5px;
+        }
+        i
+        {
+            font-size: 12px;
+            color: #999999;
+        }
+        label
+        {
+            width: 150px;
+            height: 30px;
+            line-height: 30px;
+            text-align: right;
+            font-size: 14px;
+            display: inline-block;
+        }
+        span
+        {
+            background-color:#FFFFDA ;
+            border: 1px solid #FFCD00;
+            font-size: 12px;
+            height: 20px;
+            line-height: 20px;
+            display: inline-block;
+            margin-left: 40px ;
+
+        }
+        button
+        {
+            margin-left: 159px;
+            border: dashed 1px transparent;
+            background-color: transparent;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="nav">
+    <div>
+        <img src="images/register_logo.gif">
+    </div>
+    <div class="nav1">
+        <form action="2.html" method="post">
+            <p>
+                <label for="userName">通行证用户名：</label>
+                <input type="text" id="userName" size="13px"><i>@163.com</i><span style="margin-left:19px">请输入4-12位用户名（首位为字母）</span>
+            </p>
+            <p>
+                <label for="passWord">登录密码：</label>
+                <input type="password" id="passWord"><span>密码为6-16位</span>
+            </p>
+            <p>
+                <label for="rePassWord">重复登录密码：</label>
+                <input type="password" id="rePassWord"><span>请再次输入密码</span>
+            </p>
+            <p>
+                <label>性别：</label>
+                <input type="radio" name="sex" checked>男
+                <input type="radio" name="sex">女
+            </p>
+            <p>
+                <label for="name">真实姓名：</label>
+                <input type="text" id="name"><span>请输入您的真实姓名</span>
+            </p>
+            <p>
+                <label for="NC">昵称：</label>
+                <input type="text" id="NC"><span>请输入昵称</span>
+            </p>
+            <p>
+            <label for="tel">关联手机号:</label>
+            <input type="text" id="tel"><span>请输入关联手机号</span>
+            </p>
+            <p>
+                <label for="email">保密邮箱：</label>
+                <input type="text" id="email"><span>请输入保密邮箱</span>
+            </p>
+            <button>
+                <img src="images/button.gif">
+            </button>
+        </form>
+    </div>
+</div>
+<script>
+    window.onload=function(e)
+    {
+        var form=document.querySelector('form');
+        var userName=document.querySelector('#userName');
+        var passWord=document.querySelector('#passWord');
+        var rePassWord=document.querySelector('#rePassWord');
+        var name=document.querySelector('#name');
+        var NC=document.querySelector('#NC');
+        var tel=document.querySelector('#tel');
+        var email=document.querySelector('#email');
+        var span=document.querySelectorAll('span');
+
+        //onsubmit事件
+        form.onsubmit=function(e)
+        {
+            var username=checkUserName();
+            if(!username)
+            {
+                return false;
+            }
+            var password=checkPassWord();
+            if(!password)
+            {
+                return false;
+            }
+            var rePassWord=checkRePassWord();
+            if(!rePassWord)
+            {
+                return false;
+            }
+            var name=checkName();
+            if(!name)
+            {
+                return false;
+            }
+            var NC=checkNc();
+            if(!NC)
+            {
+                return false;
+            }
+            var tel=checkTel();
+            if(!tel)
+            {
+                return false;
+            }
+            var email=checkEmail();
+            if(!email)
+            {
+                return false;
+            }
+            return true;
+        };
+
+
+
+        //onblur失去焦点事件
+        userName.onblur=function(e)
+        {
+            checkUserName();
+        };
+        passWord.onblur=function(e)
+        {
+            checkPassWord();
+        };
+        rePassWord.onblur=function(e)
+        {
+            checkRePassWord();
+        };
+        name.onblur=function(e)
+        {
+            checkName();
+        };
+        NC.onblur=function(e)
+        {
+            checkNC();
+        };
+        tel.onblur=function(e)
+        {
+            checkTel();
+        };
+        email.onblur=function(e)
+        {
+            checkEmail();
+        };
+
+
+
+//---------------------------------函数封装-------------------------------------------------------------
+       //通行证用户名
+        function checkUserName(e)
+        {
+            if(userName.value.length==0)
+            {
+                span[0].innerText='通行证用户名不能为空';
+                span[0].className='danger';
+                return false;
+            }
+            var pattern=/^[A-Za-z][A-Za-z0-9]{3,11}$/;
+            if(!pattern.test(userName.value))
+            {
+                span[0].innerText='通行证用户名格式错误，请重新输入';
+                span[0].className='danger';
+                return false;
+            }
+            span[0].innerText='通行证用户名输入正确';
+            span[0].className='success';
+            return true;
+        }
+
+
+
+        //登录密码
+        function checkPassWord(e)
+        {
+            if(passWord.value.length==0)
+            {
+                span[1].innerText='密码不能为空';
+                span[1].className='danger';
+                return false;
+            }
+            var pattern=/^[A-Za-z0-9]{6,16}$/;
+            if(!pattern.test(passWord.value))
+            {
+                span[1].innerText='密码不符合格式，请重新输入';
+                span[1].className='danger';
+                return false;
+            }
+            span[1].innerText='密码输入正确';
+            span[1].className='success';
+            return true;
+        }
+
+
+        //重复登录密码
+        function checkRePassWord(e)
+        {
+            if(rePassWord.value.length==0)
+            {
+                span[2].innerText='重复密码不能为空';
+                span[2].className='danger';
+                return false;
+            }
+            if(rePassWord.value!=passWord.value)
+            {
+                span[2].innerText='两次输入的密码不一致，请重新输入';
+                span[2].className='danger';
+                return false;
+            }
+            span[2].innerText='两次密码一致';
+            span[2].className='success';
+            return true;
+        }
+
+
+        //真实姓名（2-4位汉字）
+        function checkName(e)
+        {
+            if(name.value.length==0)
+            {
+                span[3].innerText='真实姓名不能为空';
+                span[3].className='danger';
+                return false;
+            }
+            var pattern=/^[\u4e00-\u9fa5]{2,4}$/;
+            if(!pattern.test(name.value))
+            {
+                span[3].innerText='真实姓名格式错误，请重新输入';
+                span[3].className='danger';
+                return false;
+            }
+            span[3].innerText='真实姓名输入正确';
+            span[3].className='success';
+            return true;
+        }
+
+
+
+        //昵称（6-20位所有字符）
+        function checkNC(e)
+        {
+            if(NC.value.length==0)
+            {
+                span[4].innerText='昵称不能为空';
+                span[4].className='danger';
+                return false;
+            }
+            var pattern=/^.{3,20}$/;
+            if(!pattern.test(NC.value))
+            {
+                span[4].innerText='昵称格式错误，请重新输入';
+                span[4].className='danger';
+                return false;
+            }
+            span[4].innerText='昵称输入正确';
+            span[4].className='success';
+            return true;
+        }
+
+
+
+        //手机号（）
+        function checkTel(e)
+        {
+            if(tel.value.length==0)
+            {
+                span[5].innerText='手机号不能为空';
+                span[5].className='danger';
+                return false;
+            }
+            var pattern=/^1[34578]\d{9}$/;
+            if(!pattern.test(tel.value))
+            {
+                span[5].innerText='手机号码格式错误，请重新输入';
+                span[5].className='danger';
+                return false;
+            }
+            span[5].innerText='手机号输入正确';
+            span[5].className='success';
+            return true;
+        }
+
+
+
+        //邮箱
+        function checkEmail(e)
+        {
+            if(email.value.length==0)
+            {
+                span[6].innerText='邮箱不能为空';
+                span[6].className='danger';
+                return false;
+            }
+            var pattern=/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+            if(!pattern.test(email.value))
+            {
+                span[6].innerText='邮箱格式错误，请重新输入';
+                span[6].className='danger';
+                return false;
+            }
+            span[6].innerText='邮箱输入正确';
+            span[6].className='success';
+            return true;
+        }
+    }
+</script>
+</body>
+</html>
